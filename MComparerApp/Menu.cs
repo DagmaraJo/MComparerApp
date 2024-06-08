@@ -9,23 +9,23 @@ namespace MComparerApp
     static class Menu
     {
         readonly static string[] positionsMenu = {
-          "\n                                                                 V O T E    " +
-          "\n                                                                    &       " +
-          "\n                                                              R A N K I N G " ,
+          "\n                                                                         V O T E    " +
+          "\n                                                                            &       " +
+          "\n                                                                      R A N K I N G " ,
           "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
-            "                                                         BWV 593    ▲    RV 522",
-            "                                                         BWV 594    ▼    RV 208",
-            "                                                         BWV 596    -    RV 565",
-          "\n                                                           BWV 972  -  RV 230",
-            "                                                           BWV 973  -  RV 299",
-            "                                                           BWV 975  -  RV 316a",
-            "                                                           BWV 976  -  RV 265",
-            "                                                           BWV 977  -  RV ?",
-            "                                                           BWV 978  -  RV 310",
-            "                                                           BWV 979  -  RV 318    /  RV Anh.10 Vivaldi  =>   Torelli ?",
-            "                                                           BWV 980  -  RV 381",
-          "\n                                                         BWV 1065   ▼   RV 580",
-      "\n\n\n                                                                 E X I T   " };
+            "                                                                 BWV 593    ▲    RV 522",
+            "                                                                 BWV 594    ▼    RV 208",
+            "                                                                 BWV 596    -    RV 565",
+          "\n                                                                   BWV 972  -  RV 230",
+            "                                                                   BWV 973  -  RV 299",
+            "                                                                   BWV 975  -  RV 316a",
+            "                                                                   BWV 976  -  RV 265",
+            "                                                                   BWV 977  -  RV ?",
+            "                                                                   BWV 978  -  RV 310",
+            "                                                                   BWV 979  -  RV 318    /  RV Anh.10 Vivaldi  =>   Torelli ?",
+            "                                                                   BWV 980  -  RV 381",
+          "\n                                                                 BWV 1065   ▼   RV 580",
+      "\n\n\n                                                                         E X I T   " };
         static int activePositionMenu = 0;
 
         public static void StartMenu()
@@ -40,15 +40,17 @@ namespace MComparerApp
 
         public static void ShowMenu()
         {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Black;
             var composer1 = new ComposerInMemory("Johan", "Sebastian", "Bach", "( 1685 - 1750 )");
             var composer2 = new ComposerInMemory("Antonio", "Lucio", "Vivaldi", "( 1678 - 1741 )");
             Console.SetCursorPosition(19, 17);
             Console.WriteLine(composer1.FullName);
-            Console.SetCursorPosition(100, 17);
+            Console.SetCursorPosition(110, 17);
             Console.WriteLine(composer2.FullName);
             Gray(21, 18, composer1.Age);
-            Gray(103, 18, composer2.Age);
-            Gray(59, 24, "Select concertos");
+            Gray(113, 18, composer2.Age);
+            Gray(67, 24, "Select concertos");
             Console.CursorVisible = false;
             Console.SetCursorPosition(0, 0);
             for (int i = 0; i < positionsMenu.Length; i++)
@@ -96,7 +98,7 @@ namespace MComparerApp
         {
             switch (activePositionMenu)
             {
-                case 0: VoteInMemory(); break; 
+                case 0: Vote(); break; 
                 case 1: Lab(); Label1(); Tag1(); break;
                 case 2: Lab(); Label2(); Tag2(); break;
                 case 3: Lab(); Label3(); Tag3(); break;
@@ -109,65 +111,152 @@ namespace MComparerApp
                 case 10: Lab(); Label10(); Tag10(); break;
                 case 11: Lab(); Label11(); Tag11(); break;
                 case 12: Lab(); Label12(); Tag12(); break;
-                case 13: break; //Environment.Exit(0);
+                case 13: Program.Main(); break; //Environment.Exit(0);
             }
         }
 
-        public static void VoteInMemory()
+        static void NewVoteInSurvey(object sender, EventArgs args)
         {
-            var composer = new ComposerInMemory("Johan", "Sebastian", "Bach");
-            composer.VoteAdded += ComposerInMemoryVoteAdded;
-            void ComposerInMemoryVoteAdded(object sender, EventArgs args)
+            Console.Write("       Your vote is saved\n" +
+                "\n     add another one :        ");
+        }
+
+        static void Vote()
+        {
+            Gray(7, 14, "Press  B   if you want to give marks to Bach"); 
+            Gray(100, 14, " Press  V   if you want to give marks to Vivaldi");
+            ConsoleKeyInfo key = Console.ReadKey();
+            if (key.Key == ConsoleKey.B)
             {
-                Console.Write("       Your vote is waiting for approval \n," +
-                    "\n     add another one :        ");
+                var composer = new ComposerInSurvey("Johan", "Sebastian", "Bach");
+                composer.NewVoteAdded += NewVoteInSurvey;
+                VoteInSurvey(composer);
             }
-            //composer.VoteMax += ComposerInMemoryVoteMax;
-            //void ComposerInMemoryVoteMax(object sender, EventArgs args)
-            //{
-            //    Console.Write($" +             max mark for Bach !" + "\n\n     add another one :        ");
-            //}
-            //composer.VoteMin += VoteMinComposer;
-            //void VoteMinComposer(object sender, EventArgs args)
-            //{
-            //    Console.Write($" +           max mark for Vivaldi !" + "\n\n     add another one :        ");
-            //}
+            else if (key.Key == ConsoleKey.V)
+            {
+                var composer = new VersusComposerInSurvey("Antonio", "Luci", "Vivaldi");
+                composer.NewVoteAdded += NewVoteInSurvey;
+                VoteInSurvey(composer);
+            }
+        }
+
+        public static void VoteInSurvey(Composer composer)
+        {
+            Survey();
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.SetCursorPosition(0, 5);
-            Console.Write("    Write your mark :        ");
             while (true)
             {
-                var statistics = composer.GetStatistics();
-                //var maxgrade = composer.CountMax();
-                //var minVote = composer.CountMin();
-                var input = Console.ReadLine(); 
-                if (input == "q")
+                var input = Console.ReadLine();
+                if (input == "q" || input == "Q")
                 {
-                    //var statistics = composer.GetStatistics();
-                    //composer.CountMax();
-                    Console.WriteLine("...............................................");
-                    Console.WriteLine("\n------------------------------------------");
-                    Console.WriteLine($"  total  V O T E S :   {statistics.Count} ");
-                    Console.WriteLine($"\n  {composer.FullName.ToUpper()} --------------");
-                    Console.WriteLine("________________________ R E S U L T S ______");
-                    Console.WriteLine($"      Total marks :  {statistics.Sum:N2} ");
-                    Console.WriteLine($"          Average :  {statistics.Average:N2}");
-                    Console.WriteLine($"              Max :  {statistics.Max}");
-                    Console.WriteLine($"              Min :  {statistics.Min}");
+                    composer.ShowResults();
+                    
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.SetCursorPosition(50, 37);
+                    Console.Write("                                       ");
+                    Console.SetCursorPosition(52, 37);
+                    Largo(ConsoleColor.Black,"                     Thank you for participating in the survey.        ");
+                    Console.SetCursorPosition(52, 39);
+                    Console.Write("                             press any key to return");
+                    Console.ReadKey();
+                    Console.Clear();
+                    
                     break;
                 }
                 try
                 {
-                    composer.AddGrade(input);
+                    composer.AddGrade(input.ToUpper());
+                    Console.Write("\n     add another one :        ");
                 }
                 catch (Exception ex)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write($"{ex.Message}");
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.Write("\n,\n     add another one :        ");
+                    Console.Write("\n     add another one :        ");
                 }
             }
+        }
+
+        public static void Survey()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(10, 2); 
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("In a moment you will read strongly divided opinions from S - Z about the presented concertos. If you agree with the following sentences,");
+            Console.SetCursorPosition(30, 3);
+            Largo(ConsoleColor.Black, "                       please enter the letter with ' + ' , but if you not agree add ' - '  to this letter.    ");
+            
+            Menu.Lar(47, 5, "PRESS  A ██");
+            DkYell(6, "  S    J.S.Bach turned Vivaldi's ordinary concertos into masterpieces.");
+            DkYell(7, "    █  His skill makes them deserving of being considered completely original compositions.");
+            DkYell(8, "    █  It's without a question Bach's original composition from start to finish.");
+            Menu.Lar(47, 9, "PRESS  A ██");
+            DkYell(10, "  T    These concertos are entirely different, vary in tonation and melody, Bach seems more complex.");
+            DkYell(11, "    █  Who knows, maybe it was Vivaldi who got inspiration from master Johann?");
+            Menu.Lar(47, 12, "PRESS  A ██");
+            DkYell(13, "  U    Bach's transcriptions are proof of his incredible musical talent, putting a whole orchestra");
+            DkYell(14, "    █  into one instrument is really brilliant ! And to be able to play it too !! Just genius !");
+            Menu.Lar(47, 15, "PRESS  A ██");
+            DkYell(16, "  V    You can't say he just transcribed it, he rewrote them creatively, he gave it new life !");
+            DkYell(17, "    █  Bach improved Vivaldi's simple melodies, added baroque ornaments, more skill, gor rid of");
+            DkYell(18, "    █  unnecessery fragments. The effect is a completely different piece, with its own character.");
+            Menu.Lar(47, 19, "PRESS  A ██");
+            DkYell(20, "  W    Bach only rewrote the original, partially changing the fragments made for violins amd impossible");
+            DkYell(21, "    █  to play on harpsichord. Unfortunatly not for the better, just comes down to technical show-off.");
+            DkYell(22, "    █  In the case of these concertos, Bach was indeed just a copy writer.");
+            Menu.Lar(47, 23, "PRESS  A ██");
+            DkYell(24, "  X    I love Vivaldi's original compositions, there's something annoying in Bach's transcriptions,");
+            DkYell(25, "    █  they are not whole. It's chaos without leading solos and depth other instruments in the background.");
+            Menu.Lar(47, 26, "PRESS  A ██");
+            DkYell(27, "  Y    I'm pretty surprised, I always thought it was Bach's original composition !");
+            DkYell(28, "    █  It's strange that there is lack of information that this concerto is after Vivaldi.");
+            DkYell(29, "    █  It should be signed better because it confuses people.");
+            Menu.Lar(47, 30, "PRESS  A ██");
+            DkYell(31, "  Z    It's a known fact that Bach rewrote these concertos to popularise italian music in Germany. ");
+            DkYell(32, "    █  His versions are relatively easy to play, many of them are transcribed for home harpsichord.");
+
+            Gray(50, 37, $"To leave and show statistics enter 'q'.");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.SetCursorPosition(0, 5);
+            Console.Write("     Express your opinion from  1 - 1OO" +
+                "\n   you can also use the letters A - H" +
+                "\n    or markings from the survey" +
+              "\n\n    Write your grade :        ");
+        }
+
+        static void DkYell(int top, string text)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.SetCursorPosition(43, top);
+            Console.WriteLine(text);
+        }
+
+        public static void Largo(ConsoleColor color, string text)
+        {
+            Console.CursorVisible = false;
+            foreach (var letter in text)
+            {
+                Console.BackgroundColor = color;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(letter);
+                Thread.Sleep(45);
+            }
+            Console.WriteLine();
+        }
+
+        public static void Lar(int left, int top, string text)
+        {
+            Console.CursorVisible = false;
+            foreach (var letter in text)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.SetCursorPosition(left, top);
+                Console.Write(letter);
+                Thread.Sleep(50);
+            }
+            Console.WriteLine();
         }
 
         public static void Gray(int left, int top, string text)
@@ -185,26 +274,28 @@ namespace MComparerApp
 
         static void Lab()
         {
-            GrayD(15, 23, "/ for organ or harpsichord /");
-            GrayD(21, 24, "nowaday for piano");
-            GrayD(18, 26, "Allegro, Largo, Allegro");
-            GrayD(88, 23, "/ for solo violin, strings and basso continuo /");
+            Gray(6, 21, "                                                 ");
+            GrayD(6, 23, "         / for organ or harpsichord /            ");
+            GrayD(6, 24, "               nowaday for piano                 ");
+            GrayD(6, 26, "            Allegro, Largo, Allegro              ");
+            GrayD(93, 23, "     / for solo violin, strings and basso continuo /          ");
+            GrayD(97, 26, "            Allegro, Adagio, Allegro                ");
         }
 
         static void Label1()
         {
-            Gray(13, 21, "Organ Concerto In A minor, BWV 593");
+            Gray(10, 21, "   Organ Concerto In A minor, BWV 593   ");
             GrayD(17, 26, "Allegro, Adagio, Allegro");
         }
         static void Label2()
         {
-            Gray(13, 21, "Organ Concerto In C Major, BWV 594");
+            Gray(10, 21, "   Organ Concerto In C Major, BWV 594   ");
             GrayD(13, 26, "Allegro, Recitativ Adagio, Allegro");
         }
         static void Label3()
         {
-            Gray(13, 21, "Organ Concerto In D minor, BWV 596");
-            GrayD(13, 26, "Adagio Grave, Fuge, Largo, Finale");
+            Gray(10, 21, "   Organ Concerto In D minor, BWV 596   ");
+            GrayD(13, 26, "Adagio Grave, Fuge, Largo, Finale ");
         }
         static void Label4()
         {
@@ -250,77 +341,79 @@ namespace MComparerApp
 
         static void Tag1()
         {
-            Gray(97, 21, "Concerto in A minor, RV 522");
-            GrayD(94, 23, "two violins");
-            GrayD(91, 24, "Op. 3 No. 8, from \"L'estro Armonico\" 1711");
-            GrayD(92, 26, "Allegro, Larghetto e spiritoso, Allegro");
-            Console.ReadKey(); Console.Clear();
+            Gray(97, 21, "          Concerto in A minor, RV 522         ");
+            GrayD(93, 23, "     / for two violins");
+            GrayD(101, 24, "Op. 3 No. 8, from \"L'estro Armonico\" 1711");
+            GrayD(102, 26, "Allegro, Larghetto e spiritoso, Allegro");
         }
         static void Tag2()
         {
-            Gray(87, 21, "Concerto in D Major \"Il Grosso Mogul\", RV 208");
-            GrayD(104, 24, "Op.7 No.11"); // also 208 a, Op.7 No.11
-            GrayD(92, 26, "Allegro, Grave Recitativo, Allegro");
+            Gray(97, 21, "Concerto in D Major \"Il Grosso Mogul\", RV 208");
+            GrayD(101, 24, "             Op.7 No.11                     "); 
+            GrayD(102, 26, "Allegro, Grave Recitativo, Allegro");
         }
         static void Tag3()
         {
-            Gray(94, 21, "Concerto Grosso in D minor, RV 565");
-            GrayD(84, 23, "/ for 2 violins and cello, strings and basso continuo /");
-            GrayD(91, 24, "Op. 3 No. 11 from \"L'estro Armonico\" 1711");
-            GrayD(92, 26, "Allegro, Adagio, Allegro, Largo, Allegro");
+            Gray(97, 21, "       Concerto Grosso in D minor, RV 565      ");
+            GrayD(94, 23, "/ for 2 violins and cello, strings and basso continuo /");
+            GrayD(101, 24, "Op. 3 No. 11 from \"L'estro Armonico\" 1711");
+            GrayD(102, 26, "Allegro, Adagio, Allegro, Largo, Allegro");
         }
         static void Tag4()
         {
-            Gray(97, 21, "Concerto in D Major, RV 230");
-            GrayD(91, 24, "Op. 3 No. 9 from \"L'estro Armonico\" 1711");
-            GrayD(97, 26, "Allegro, Larghetto, Allegro");
+            Gray(97, 21, "          Concerto in D Major, RV 230          ");
+            GrayD(101, 24, "Op. 3 No. 9 from \"L'estro Armonico\" 1711");
+            GrayD(107, 26, "Allegro, Larghetto, Allegro");
         }
         static void Tag5()
         {
-            Gray(97, 21, "Concerto in G Major, RV 299");
-            GrayD(104, 24, "Op. 7 No. 8");
-            GrayD(90, 26, "Allegro assai, Larghetto staccato, Allegro");
+            Gray(97, 21, "          Concerto in G Major, RV 299          ");
+            GrayD(101, 24, "             Op. 7 No. 8                    ");
+            GrayD(100, 26, "Allegro assai, Larghetto staccato, Allegro");
         }
         static void Tag6()
         {
-            Gray(97, 21, "Concerto in G Major, RV 316a");
-            GrayD(92, 24, "Op. 4 No. 6 from \"La stravaganza\" 1716");
-            GrayD(99, 26, "Allegro, Largo, Allegro");
+            Gray(97, 21, "          Concerto in G Major, RV 316a          ");
+            GrayD(101, 24, "   Op. 4 No. 6 from \"La stravaganza\" 1716   ");
+            GrayD(109, 26, "Allegro, Largo, Allegro  ");
         }
         static void Tag7()
         {
-            Gray(97, 21, "Concerto in E major, RV 265");
-            GrayD(91, 24, "Op. 3 No. 12 from \"L'estro Armonico\" 1711");
-            GrayD(93, 26, "Allegro, Largo e molto acuto, Allegro");
+            Gray(97, 21, "          Concerto in E major, RV 265           ");
+            GrayD(101, 24, "Op. 3 No. 12 from \"L'estro Armonico\" 1711");
+            GrayD(103, 26, "Allegro, Largo e molto acuto, Allegro   ");
         }
         static void Tag8()
         {
-            Gray(87, 23, "There is highly probably lost Concerto in D Major");
+            Gray(97, 21, "                                               ");
+            GrayD(93, 23, "                                                              ");
+            Gray(101, 24, "  highly probably lost Concerto in D Major    ");
+            GrayD(109, 26, "                         ");
         }
         static void Tag9()
         {
-            Gray(97, 21, "Concerto in G Major, RV 310");
-            GrayD(91, 24, "Op. 3 No. 3 from \"L'estro Armonico\" 1711");
-            GrayD(99, 26, "Allegro, Largo, Allegro");
+            Gray(97, 21, "         Concerto in G Major, RV 310           ");
+            GrayD(101, 24, "Op. 3 No. 3 from \"L'estro Armonico\" 1711    ");
+            GrayD(109, 26, "Allegro, Largo, Allegro  ");
         }
         static void Tag10()
         {
-            Gray(97, 21, "Concerto in G minor, RV 318");
-            GrayD(104, 24, "Op. 6 No. 3");
-            GrayD(99, 26, "Allegro, Adagio, Allegro");
+            Gray(97, 21, "         Concerto in G minor, RV 318            ");
+            GrayD(101, 24, "             Op. 6 No. 3                      ");
+            GrayD(109, 26, "Allegro, Adagio, Allegro");
         }
         static void Tag11()
         {
-            Gray(97, 21, "Concerto in B Major, RV 381");
-            GrayD(92, 24, "Op. 4 No. 6 from \"La stravaganza\" 1716");
-            GrayD(99, 26, "Allegro, Adagio, Allegro");
+            Gray(97, 21, "         Concerto in B Major, RV 381            ");
+            GrayD(101, 24, " Op. 4 No. 6 from \"La stravaganza\" 1716   ");
+            GrayD(109, 26, "Allegro, Adagio, Allegro");
         }
         static void Tag12()
         {
-            Gray(91, 21, "Concerto for 4 violins in B minor, RV 580");
-            GrayD(83, 23, "/ for 4 violins, 2 violas, cello, strings and basso continuo /");
-            GrayD(91, 24, "Op. 3 No. 10 from \"L'estro Armonico\" 1711");
-            GrayD(87, 26, "Allegro, Largo - Larghetto – Adagio F♯ – Largo, Allegro");
+            Gray(101, 21, "Concerto for 4 violins in B minor, RV 580");
+            GrayD(93, 23, "/ for 4 violins, 2 violas, cello, strings and basso continuo");
+            GrayD(101, 24, "Op. 3 No. 10 from \"L'estro Armonico\" 1711");
+            GrayD(97, 26, "Allegro, Largo - Larghetto – Adagio – Largo, Allegro");
         }
     }
 }

@@ -18,12 +18,8 @@ namespace MComparerApp
         void AddGrade(int grade);
         void AddGrade(double grade);
 
-        //event VoteAddedDelegate VoteAdded;
-        //event VoteMaxDelegate VoteMax;
-        //event VoteMinDelegate VoteMin;
+        event VoteAddedDelegate NewVoteAdded;
 
         Statistics GetStatistics();
-        //Statistics CountMax();
-        //Statistics CountMin();
     }
 }

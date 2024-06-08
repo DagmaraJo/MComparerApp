@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace MComparerApp
 {
+
     public class ComposerInMemory : Composer
     {
         public List<float> grades = new List<float>();
-        private readonly List<float> ComposerVote = new List<float>();
-        public override event VoteAddedDelegate VoteAdded;
-        private readonly List<float> ComposerVoteMax = new List<float>();
-        public override event VoteMaxDelegate VoteMax;
-        private readonly List<float> ComposerVoteMin = new List<float>();
-        public override event VoteMinDelegate VoteMin;
+        private readonly List<float> ComposerVoteList = new List<float>();
+
+        public override event VoteAddedDelegate NewVoteAdded;
+
+        public ComposerInMemory()
+            : base() { }
 
         public ComposerInMemory(string name, string surname)
             : base(name, surname) { }
@@ -28,35 +29,18 @@ namespace MComparerApp
 
         public override void AddGrade(float grade)
         {
-            if (grade >=0 && grade <= 100)
+            if (grade >=0.002 && grade <= 100.009)
             {
-                this.ComposerVote.Add(grade);
+                this.ComposerVoteList.Add(grade);
                 //CheckEventVoteAdded();
-                if (VoteAdded != null)
+                if (NewVoteAdded != null)
                 {
-                    VoteAdded(this, new EventArgs());
+                    NewVoteAdded(this, new EventArgs());
                 }
             }
-            //else if (grade == 100)
-            //{
-            //    this.ComposerVoteMax.Add(grade);
-            //    //CheckEventVoteMax();
-            //    if (VoteMax != null)
-            //    {
-            //        VoteMax(this, new EventArgs());
-            //    }
-            //}
-            //else if (grade == 0)
-            //{
-            //    this.ComposerVoteMin.Add(grade);
-            //    if (VoteMin != null)
-            //    {
-            //        VoteMin(this, new EventArgs());
-            //    }
-            //}
             else
             {
-                throw new Exception("      Invalid grade value !");
+                throw new Exception("      Invalid grade value !   ▀▀▀▀▀");
             }
         }
 
@@ -64,17 +48,9 @@ namespace MComparerApp
         {
             get
             {
-                return this.ComposerVote.Sum();
+                return this.ComposerVoteList.Sum();
             }
         }
-
-        //public float MinCount
-        //{
-        //    get
-        //    {
-        //        return ComposerVoteMin.Count;
-        //    }
-        //}
 
         public override void AddGrade(string grade)
         {
@@ -88,7 +64,7 @@ namespace MComparerApp
             }
             else
             {
-                throw new Exception("      String is not float !");
+                throw new Exception("      String is not float !   ▀▀▀▀▀");
             }
         }
 
@@ -100,28 +76,28 @@ namespace MComparerApp
                     this.AddGrade(100);
                     break;
                 case 'B':
-                    this.AddGrade(80);
+                    this.AddGrade(90);
                     break;
                 case 'C':
-                    this.AddGrade(60);
+                    this.AddGrade(80);
                     break;
                 case 'D':
-                    this.AddGrade(40);
+                    this.AddGrade(70);
                     break;
                 case 'E':
-                    this.AddGrade(20);
+                    this.AddGrade(60);
                     break;
                 case 'F':
-                    this.AddGrade(10);
+                    this.AddGrade(50);
                     break;
                 case 'G':
-                    this.AddGrade(3.14f);
+                    this.AddGrade(30);
                     break;
                 case 'H':
-                    this.AddGrade(0);
+                    this.AddGrade(10);
                     break;
                 default:
-                    throw new Exception("      Wrong Letter !");
+                    throw new Exception("             Wrong Letter !   ▀▀▀▀▀");
             }
         }
 
@@ -141,7 +117,7 @@ namespace MComparerApp
         {
             var statistics = new Statistics();
 
-            foreach (var grade in this.ComposerVote) // List<float> grades ? or this.ComposerVote
+            foreach (var grade in this.ComposerVoteList) // List<float> grades ? or this.ComposerVoteList
             {
                 statistics.AddGrade(grade);
             }
