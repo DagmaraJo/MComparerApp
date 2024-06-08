@@ -111,7 +111,7 @@ namespace MComparerApp
                 case 10: Lab(); Label10(); Tag10(); break;
                 case 11: Lab(); Label11(); Tag11(); break;
                 case 12: Lab(); Label12(); Tag12(); break;
-                case 13: Program.Main(); break; //Environment.Exit(0);
+                case 13: Program.Main(); break;
             }
         }
 

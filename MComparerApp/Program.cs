@@ -7,8 +7,6 @@ public partial class Program
     public static void Main()
     {
         Clear();
-        //ConsoleKeyInfo key = Console.ReadKey();
-        //Background();
         Information();
         bool Exit = false;
         while (!Exit)
@@ -171,6 +169,9 @@ public partial class Program
         composer.NewVoteAdded += NewVoteVoid;
         TryCatchVote(composer);
         Attention(53, 30, "     Remember, this vote will not be saved !     ");
+        InfoBlue(38, 34, "                                                                                         ");
+        InfoBlue(38, 35, "   If You want to save vote's results, please enter the composer from the list bellowe   ");
+        InfoBlue(38, 36, "                                                                                         ");
         Clear();
     }
 
