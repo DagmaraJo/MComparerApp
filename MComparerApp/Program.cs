@@ -17,7 +17,7 @@ public partial class Program
             //var userInput = Console.ReadLine().ToUpper();
             ConsoleKeyInfo key = Console.ReadKey();
 
-            switch (key.Key )
+            switch (key.Key)
             {
                 case ConsoleKey.A:
                     VoteInMemoryA(); break;
@@ -46,7 +46,7 @@ public partial class Program
                         //continue;
                     }
                     break;
-                case ConsoleKey.I :
+                case ConsoleKey.I:
                     Info(); Console.ReadKey();
                     break;
                 case ConsoleKey.S:
@@ -64,7 +64,7 @@ public partial class Program
                     Exit = true;
                     Console.Clear();
                     Console.BackgroundColor = ConsoleColor.Cyan;
-                    
+
                     Menu.GrayD(20, 36, "press any key to leave\n\n\n");
                     Console.ReadKey();
                     Environment.Exit(0); break;
@@ -90,7 +90,7 @@ public partial class Program
     static void NewVoteVoid(object sender, EventArgs args)
     {
         Console.BackgroundColor = ConsoleColor.Gray;
-        Console.ForegroundColor = ConsoleColor.White; 
+        Console.ForegroundColor = ConsoleColor.White;
         Console.Write(" Vote is waiting for approval\n");
         Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.Write("       add another one :     ▒ ");
@@ -165,7 +165,7 @@ public partial class Program
         InGreen(94, 17, " B ");
         InGreen(101, 39, " Johan Sebastian Bach ");
         VoteWindow();
-        var composer = new ComposerInMemory("Johan","Sebastian" ,"Bach");
+        var composer = new ComposerInMemory("Johan", "Sebastian", "Bach");
         composer.NewVoteAdded += NewVoteVoid;
         TryCatchVote(composer);
         Attention(53, 30, "     Remember, this vote will not be saved !     ");
@@ -188,9 +188,9 @@ public partial class Program
         Console.SetCursorPosition(95, 34);
         surname = Console.ReadLine();
 
-      //  Attention(6, 3, $"  Sorry, this Composer {name} {secondname} {surname} does not exist in the system. Everything you do will stay in working memory ");
-      //  InfoBlue(38, 30, "       If You want to save vote's results, please chose the composer from the list bellowe        ");
-      //  ComposersList();
+        //  Attention(6, 3, $"  Sorry, this Composer {name} {secondname} {surname} does not exist in the system. Everything you do will stay in working memory ");
+        //  InfoBlue(38, 30, "       If You want to save vote's results, please chose the composer from the list bellowe        ");
+        //  ComposersList();
     }
 
     static void Attention(int left, int top, string text)
@@ -225,7 +225,7 @@ public partial class Program
         Console.Write(text);
     }
 
-    static void InGreen(int left, int top, string text) 
+    static void InGreen(int left, int top, string text)
     {
         Console.BackgroundColor = ConsoleColor.DarkGreen;
         Console.ForegroundColor = ConsoleColor.White;
@@ -233,7 +233,7 @@ public partial class Program
         Console.WriteLine(text);
     }
 
-    public static void Largo( string text, char search, ConsoleColor color)
+    public static void Largo(string text, char search, ConsoleColor color)
     {
         Console.CursorVisible = false;
         Console.BackgroundColor = ConsoleColor.Cyan;
@@ -282,7 +282,7 @@ public partial class Program
     static void Information()
     {
         Console.SetCursorPosition(0, 41);
-        Menu.Largo(ConsoleColor.Cyan,"                               . . .  invite you to a special survey on the comparator - DUEL of Champions - enter S  . . .");
+        Menu.Largo(ConsoleColor.Cyan, "                               . . .  invite you to a special survey on the comparator - DUEL of Champions - enter S  . . .");
         //Console.SetCursorPosition(95, 49);
         //Menu.Largo(ConsoleColor.Cyan,"    press Esc to skip this intro  ");
         Console.SetCursorPosition(0, 14);
@@ -295,7 +295,7 @@ public partial class Program
         Console.SetCursorPosition(104, 27);
         Menu.Largo(ConsoleColor.Cyan, "        vote for him   ");
         Console.SetCursorPosition(105, 29);
-        Menu.Largo(ConsoleColor.Cyan,"     and check the results ");
+        Menu.Largo(ConsoleColor.Cyan, "     and check the results ");
     }
 
     static void ComposersList()
@@ -370,7 +370,7 @@ public partial class Program
         "\n       ░░░░░░░░░░░░░░░░░                      Take part in researching the work of the most outstanding composers.                    ░░░░░░░░░░░░░░░░░    " +
         "\n       ░░░░░░░░░░░░░░░░░                                                                                                              ░░░░░░░░░░░░░░░░░    " +
         "\n       ░░░░░░░░░░░░░░░░░                                                                                                              ░░░░░░░░░░░░░░░░░    " +
-        "\n       ░░░░░░░░░░░░░░░░░                                                                                                              ░░░░░░░░░░░░░░░░░    " +          
+        "\n       ░░░░░░░░░░░░░░░░░                                                                                                              ░░░░░░░░░░░░░░░░░    " +
         "\n       ░░░░░░░░░░░░░░░░░                                            ________<\">________                                               ░░░░░░░░░░░░░░░░░    " +
         "\n       ░░░░░░░░░░░░░░░░░                                                                                                              ░░░░░░░░░░░░░░░░░    " +
         "\n       ░░░░░░░░░░░░░░░░░░░░░░░░░░░░                                                                                      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░    " +
@@ -380,7 +380,7 @@ public partial class Program
         "\n                                                                                                                                                           " +
         "\n                                                                                                                                                           " +
         "\n                                                                                                                                                           " +
-        "\n                                                                                                                                                           " );
+        "\n                                                                                                                                                           ");
 
         //InfoBlue(0, 40,
         //  "   ░░░░░░░░░░░░░░░░░                                                                                                                  ░░░░░░░░░░░░░░░░░░░░\n" +
@@ -399,12 +399,12 @@ public partial class Program
         //  "   ░░░░░░░░░░░░░░░░░░░░░░░░                                                                                                    ░░░░░░░░░░░░░░░░░░░░░░░░░░░\n");
 
         ChooseComposer();
-        Console.SetCursorPosition(76,12);
+        Console.SetCursorPosition(76, 12);
     }
 
     static void VoteWindow()
     {
-        InfoGray(0,4,
+        InfoGray(0, 4,
               "░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░" +
             "\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░" +
             "\n░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░" +
@@ -453,16 +453,4 @@ public partial class Program
             "\n▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒");
     }
 }
-
-    
-
-
-
-
-
-    
-
-
-
-
 
