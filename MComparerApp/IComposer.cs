@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using static MComparerApp.Composer;
-
-namespace MComparerApp
+﻿namespace MComparerApp
 {
     public interface IComposer
     {
-        string Name { get; }
-        string Secondname { get; }
-        string Surname { get; }
-        string Age { get; }
-        string Nationality { get; }
-        string Period { get; }
+        string? Name { get; }
+        string? Secondname { get; }
+        string? Surname { get; }
+        string? Age { get; }
+        string? Nationality { get; }
+        string? Period { get; }
         void AddGrade(float grade);
         void AddGrade(string grade);
         void AddGrade(char grade);

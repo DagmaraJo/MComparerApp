@@ -1,49 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MComparerApp
+﻿namespace MComparerApp
 {
-    internal class ComposerInSurvey : ComposerInFile
+    internal class ComposerInSurvey : Composer
     {
-        //private readonly List<float> ComposerVoteList = new List<float>();
-
         public ComposerInSurvey(string name, string secondname, string surname)
             : base(name, secondname, surname)
         {
+            fullFileName = $"{name}{secondname}{surname}{fileName}";
         }
+
+        private const string fileName = "_grades.txt";
+        readonly string fullFileName;
 
         public override event VoteAddedDelegate NewVoteAdded;
 
-        //private const string fileName = "_vote.txt";
-        //readonly string fullFileName;
-
-        //public ComposerInSurvey(string name, string secondname, string surname) : base(name, secondname, surname)
-        //{
-        //    fullFileName = $"{name}_{secondname}_{surname}{fileName}";
-        //}
+        //List<float> list1 = new List<float>();
+        //List<float> list2 = new List<float>();
 
         //public override void AddGrade(float grade)
         //{
-        //    if (grade >= 0 && grade <= 100)
+        //    if (grade >= 0.002 && grade <= 100.009)
         //    {
-        //        using (var writer = File.AppendText(fullFileName))
+        //        switch (grade)
         //        {
-        //            writer.WriteLine(grade);
-        //            if (NewVoteAdded != null)
-        //            {
-        //                NewVoteAdded(this, new EventArgs());
-        //            }
-        //            //CheckEventVoteAdded();
+        //            case 4.0f:
+        //                list1.Add(grade);
+        //                break;
+
+        //            case 3.5f:
+        //                list2.Add(grade);
+        //                break;
+
+        //            default:
+        //                // Obsłuż inne oceny, jeśli potrzeba
+        //                break;
         //        }
         //    }
-        //    else
-        //    {
-        //        throw new Exception("      Invalid grade value !");
-        //    }
         //}
+
+
+        public override void AddGrade(float grade)
+        {
+            if (grade >= 0.002 && grade <= 100.009)
+            {
+                using (var writer = File.AppendText(fullFileName))
+                {
+                    writer.WriteLine(grade);
+                    NewVoteAdded?.Invoke(this, new EventArgs());
+                }
+            }
+            else
+            {
+                throw new Exception("      Invalid grade value !   ▀▀▀▀▀");
+            }
+        }
 
         public override void AddGrade(string grade)
         {
@@ -99,12 +108,12 @@ namespace MComparerApp
                 }
                 else
                 {
-                    throw new Exception("      String is not float !");
+                    throw new Exception("      String is not float !   ▀▀▀▀▀");
                 }
             }
         }
 
-        public override void AddGrade(char grade)
+        public new void AddGrade(char grade)
         {
             switch (char.ToUpper(grade))
             {
@@ -136,6 +145,43 @@ namespace MComparerApp
                     throw new Exception("  Wrong Letter ! use A - H \n" +
                         " Survey sign are akcept only with + or -");
             }
+        }
+
+        public override Statistics GetStatistics()
+        {
+            var gradesFromFile = this.ReadGradesFromFile();
+            var result = CountStatistics(gradesFromFile);
+            return result;
+        }
+
+        private List<float> ReadGradesFromFile()
+        {
+            var grades = new List<float>();
+            if (File.Exists($"{fullFileName}"))
+            {
+                using (var reader = File.OpenText($"{fullFileName}"))
+                {
+                    var line = reader.ReadLine();
+                    while (line != null)
+                    {
+                        var number = float.Parse(line);
+                        grades.Add(number);
+                        line = reader.ReadLine();
+                    }
+                }
+            }
+            return grades;
+        }
+
+        private static Statistics CountStatistics(List<float> grades)
+        {
+            var statistics = new Statistics();
+
+            foreach (var grade in grades)
+            {
+                statistics.AddGrade(grade);
+            }
+            return statistics;
         }
     }
 }

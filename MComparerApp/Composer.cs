@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MComparerApp
+﻿namespace MComparerApp
 {
     public delegate void VoteAddedDelegate(object sender, EventArgs args);
 
@@ -31,70 +29,75 @@ namespace MComparerApp
             this.Age = Age;
         }
 
-        public string Name { get; private set; }
-        //{
-        //    get
-        //    {
-        //        return $"{char.ToUpper(Name[0])}{Name.Substring(1, Name.Length - 1).ToLower()}";
-        //    }
-        //    set
-        //    {
-        //        if (!string.IsNullOrEmpty(value))
-        //        {
-        //            Name = value;
-        //        }
-        //    }
-        //}
+        public string? Name { get; private set; }
+        
 
-        public string Secondname { get; private set; }
-        //{
-        //    get
-        //    {
-        //        return $"{char.ToUpper(Secondname[0])}{Secondname.Substring(1, Secondname.Length - 1).ToLower()}";
-        //    }
-        //    set
-        //    {
-        //        if (!string.IsNullOrEmpty(value)) 
-        //        {
-        //            Secondname = value;
-        //        }
-        //    }
-        //}
-        public string Surname { get; private set; }
-        //{
-        //    get
-        //    {
-        //        return $"{char.ToUpper(Surname[0])}{Surname.Substring(1, Surname.Length - 1).ToLower()}";
-        //    }
-        //    set
-        //    {
-        //        if (!string.IsNullOrEmpty(value))
-        //        {
-        //            Surname = value;
-        //        }
-        //    }
-        //}
-        public string Age { get; private set; }
-        public string Nationality { get; private set; }
-        public string Period { get; private set; }
+        public string? Secondname { get; private set; }
+        
+        public string? Surname { get; private set; }
+        
+        public string? Age { get; private set; }
+
+        public string? Nationality { get; private set; }
+        
+        public string? Period { get; private set; }
+        
         public string FullName => $"{Name} {Secondname} {Surname}";
-        public string FullName2 => $"{Name} {Surname}";
+        
+        public string? FullName2 => $"{Name} {Surname}";
 
         public abstract void AddGrade(float grade);
 
         public abstract void AddGrade(string grade);
 
-        public abstract void AddGrade(char grade);
+        public void AddGrade(char grade)
+        {
+            switch (char.ToUpper(grade))
+            {
+                case 'A':
+                    this.AddGrade(100);
+                    break;
+                case 'B':
+                    this.AddGrade(90);
+                    break;
+                case 'C':
+                    this.AddGrade(80);
+                    break;
+                case 'D':
+                    this.AddGrade(70);
+                    break;
+                case 'E':
+                    this.AddGrade(60);
+                    break;
+                case 'F':
+                    this.AddGrade(50);
+                    break;
+                case 'G':
+                    this.AddGrade(30);
+                    break;
+                case 'H':
+                    this.AddGrade(10);
+                    break;
+                default:
+                    throw new Exception("             Wrong Letter !   ▀▀▀▀▀");
+            }
+        }
 
-        public abstract void AddGrade(int grade);
+        public void AddGrade(int grade)
+        {
+            float gradeAsInt = grade;
+            this.AddGrade(gradeAsInt);
+        }
 
-        public abstract void AddGrade(double grade);
+        public void AddGrade(double grade)
+        {
+            float gradeAsDouble = (float)grade;
+            this.AddGrade(gradeAsDouble);
+        }
 
         public abstract event VoteAddedDelegate NewVoteAdded;
 
         public abstract Statistics GetStatistics();
-
-        public abstract void MemoryFullNameStringBuilder();
 
         public void ShowResults()
         {
@@ -119,15 +122,5 @@ namespace MComparerApp
             Console.WriteLine(" ------------------------------");
             Console.Write("XXXShowResults();/from baseXXXX");
         }
-
-        //public virtual event VoteAddedDelegate VoteAdded;
-
-        //protected void CheckEventVoteAdded()
-        //{
-        //    if (VoteAdded != null)
-        //    {
-        //        VoteAdded(this, new EventArgs());
-        //    }
-        //}
     }
 }

@@ -1,8 +1,4 @@
-﻿using MComparerApp;
-using System;
-using System.Text;
-
-namespace MComparerApp
+﻿namespace MComparerApp
 {
     internal class ComposerInFile : Composer
     {
@@ -10,10 +6,6 @@ namespace MComparerApp
         readonly string fullFileName;
 
         public override event VoteAddedDelegate NewVoteAdded;
-
-        //public override event VoteMaxDelegate VoteMax;
-
-        //public override event VoteMinDelegate VoteMin;
 
         public ComposerInFile()
             : base() { }
@@ -30,20 +22,6 @@ namespace MComparerApp
             fullFileName = $"{name}{secondname}{surname}{fileName}";
         }
 
-        //public override void MemoryFullNameStringBuilder()
-        //{
-        //    Console.WriteLine("\n=========>> in MemoryFullNameStringBuilder(); ");
-        //    StringBuilder sb = new StringBuilder($"    {this.FullName.ToUpper()}    * * * ");
-        //    for (int i = 0; i < grades.Count; i++)
-        //    {
-        //        if (i == grades.Count)
-        //            sb.Append($"{grades[i]}");
-        //        else
-        //            sb.Append($"{grades[i]}");
-        //    }
-        //    Console.WriteLine(sb);
-        //}
-
         public override void AddGrade(float grade)
         {
             if (grade >= 0.002 && grade <= 100.009)
@@ -51,39 +29,12 @@ namespace MComparerApp
                 using (var writer = File.AppendText(fullFileName))
                 {
                     writer.WriteLine(grade);
-                    //CheckEventVoteAdded();
-                    if (NewVoteAdded != null)
-                    {
-                        NewVoteAdded(this, new EventArgs());
-                    }
+                    NewVoteAdded?.Invoke(this, new EventArgs());
                 }
             }
-            //else if (grade == 100)
-            //{
-            //    using (var writer = File.AppendText(fullFileName))
-            //    {
-            //        writer.WriteLine(grade);
-            //        //CheckEventVoteMax();
-            //    }
-            //    //if (VoteMax != null)
-            //    //{
-            //    //    VoteMax(this, new EventArgs());
-            //    //}
-            //}
-            //else if (grade == 0)
-            //{
-            //    using (var writer = File.AppendText(fullFileName))
-            //    {
-            //        writer.WriteLine(grade);
-            //    }
-            //    //if (VoteMin != null)
-            //    //{
-            //    //    VoteMin(this, new EventArgs());
-            //    //}
-            //}
             else
             {
-                throw new Exception("      Invalid grade value !");
+                throw new Exception("      Invalid grade value !   ▀▀▀▀▀");
             }
         }
 
@@ -93,65 +44,20 @@ namespace MComparerApp
             {
                 this.AddGrade(result);
             }
-            else if (char.TryParse(grade, out char cResult))
+            else if (char.TryParse(grade, out char chResult))
             {
-                this.AddGrade(cResult);
+                this.AddGrade(chResult);
             }
             else
             {
-                throw new Exception("      String is not float !");
+                throw new Exception("      String is not float !   ▀▀▀▀▀");
             }
-        }
-
-        public override void AddGrade(char grade)
-        {
-            switch (char.ToUpper(grade))
-            {
-                case 'A':
-                    this.AddGrade(100);
-                    break;
-                case 'B':
-                    this.AddGrade(90);
-                    break;
-                case 'C':
-                    this.AddGrade(80);
-                    break;
-                case 'D':
-                    this.AddGrade(70);
-                    break;
-                case 'E':
-                    this.AddGrade(60);
-                    break;
-                case 'F':
-                    this.AddGrade(50);
-                    break;
-                case 'G':
-                    this.AddGrade(30);
-                    break;
-                case 'H':
-                    this.AddGrade(10);
-                    break;
-                default:
-                    throw new Exception("      Wrong Letter !");
-            }
-        }
-
-        public override void AddGrade(int grade)
-        {
-            float gradeAsInt = grade;
-            this.AddGrade(gradeAsInt);
-        }
-
-        public override void AddGrade(double grade)
-        {
-            float gradeAsDouble = (float)grade;
-            this.AddGrade(gradeAsDouble);
         }
 
         public override Statistics GetStatistics()
         {
             var gradesFromFile = this.ReadGradesFromFile();
-            var result = this.CountStatistics(gradesFromFile);
+            var result = CountStatistics(gradesFromFile);
             return result;
         }
 
@@ -174,7 +80,7 @@ namespace MComparerApp
             return grades;
         }
 
-        private Statistics CountStatistics(List<float> grades)
+        private static Statistics CountStatistics(List<float> grades)
         {
             var statistics = new Statistics();
 
@@ -184,11 +90,5 @@ namespace MComparerApp
             }
             return statistics;
         }
-
-        public override void MemoryFullNameStringBuilder()
-        {
-            throw new NotImplementedException();
-        }
     }
-
 }

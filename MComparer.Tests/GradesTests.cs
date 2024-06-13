@@ -1,4 +1,4 @@
-namespace MComparerApp.Tests2
+namespace MComparerApp.Tests
 {
     public class GradesTests
     {
@@ -11,7 +11,7 @@ namespace MComparerApp.Tests2
 
             int result = grade1 + grade2 + grade3;
 
-            Assert.AreEqual(55, result);
+            Assert.That(result, Is.EqualTo(55));
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace MComparerApp.Tests2
 
             float result = (grade1 + grade2) / 2;
 
-            Assert.AreEqual(25, result);
+            Assert.That(result, Is.EqualTo(25));
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace MComparerApp.Tests2
 
             float result = grade1 + grade2 + grade3;
 
-            Assert.AreEqual(18, result);
+            Assert.That(result, Is.EqualTo(18));
         }
 
 
@@ -47,7 +47,7 @@ namespace MComparerApp.Tests2
 
             float result = grade1 + grade2 + grade3;
 
-            Assert.AreEqual(18, result);
+            Assert.That(result, Is.EqualTo(18));
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace MComparerApp.Tests2
 
             var average = (grade1 + grade2) / 2;
 
-            Assert.AreEqual(24, average);
+            Assert.That(average, Is.EqualTo(24));
         }
     }
 }

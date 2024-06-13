@@ -1,6 +1,4 @@
 ﻿using MComparerApp;
-using System.Drawing;
-using System.Xml.Linq;
 
 public partial class Program
 {
@@ -11,10 +9,6 @@ public partial class Program
         bool Exit = false;
         while (!Exit)
         {
-            //Background();
-            //ChooseComposer();
-            //Information();
-            //var userInput = Console.ReadLine().ToUpper();
             ConsoleKeyInfo key = Console.ReadKey();
 
             switch (key.Key)
@@ -43,7 +37,6 @@ public partial class Program
                     {
                         Attention(53, 30, "    The name and the surname can not be empty!   ");
                         Clear();
-                        //continue;
                     }
                     break;
                 case ConsoleKey.I:
@@ -62,10 +55,9 @@ public partial class Program
                     break;
                 case ConsoleKey.Escape:
                     Exit = true;
-                    Console.Clear();
                     Console.BackgroundColor = ConsoleColor.Cyan;
-
-                    Menu.GrayD(20, 36, "press any key to leave\n\n\n");
+                    Console.Clear();
+                    Menu.Write(ConsoleColor.DarkGray,20, 36, "press any key to leave\n\n\n");
                     Console.ReadKey();
                     Environment.Exit(0); break;
                 default:
@@ -74,7 +66,7 @@ public partial class Program
                     Info();
                     Attention(60, 44, "      Invalid operation.    \n");
                     Clear();
-                    break;//continue;
+                    break;
             }
         }
     }
@@ -143,37 +135,6 @@ public partial class Program
             }
         }
     }
-    static void VoteInMemoryA()
-    {
-        ComposersList();
-        InGreen(58, 17, " A ");
-        InGreen(38, 45, " Antonio Luci Vivaldi ");
-        VoteWindow();
-        Composer composer = new ComposerInMemory("Antonio", "Luci", "Vivaldi");
-        composer.NewVoteAdded += NewVoteVoid;
-        TryCatchVote(composer);
-        Attention(53, 30, "     Remember, this vote will not be saved !     ");
-        InfoBlue(38, 34, "                                                                                         ");
-        InfoBlue(38, 35, "   If You want to save vote's results, please enter the composer from the list bellowe   ");
-        InfoBlue(38, 36, "                                                                                         ");
-        Clear();
-    }
-
-    static void VoteInMemoryB()
-    {
-        ComposersList();
-        InGreen(94, 17, " B ");
-        InGreen(101, 39, " Johan Sebastian Bach ");
-        VoteWindow();
-        var composer = new ComposerInMemory("Johan", "Sebastian", "Bach");
-        composer.NewVoteAdded += NewVoteVoid;
-        TryCatchVote(composer);
-        Attention(53, 30, "     Remember, this vote will not be saved !     ");
-        InfoBlue(38, 34, "                                                                                         ");
-        InfoBlue(38, 35, "   If You want to save vote's results, please enter the composer from the list bellowe   ");
-        InfoBlue(38, 36, "                                                                                         ");
-        Clear();
-    }
 
     static void InsertFullName(out string name, out string secondname, out string surname)
     {
@@ -187,10 +148,39 @@ public partial class Program
         InfoGray(57, 27, "   Please insert composer's last name    ");
         Console.SetCursorPosition(95, 34);
         surname = Console.ReadLine();
+    }
 
-        //  Attention(6, 3, $"  Sorry, this Composer {name} {secondname} {surname} does not exist in the system. Everything you do will stay in working memory ");
-        //  InfoBlue(38, 30, "       If You want to save vote's results, please chose the composer from the list bellowe        ");
-        //  ComposersList();
+    static void VoteInMemoryA()
+    {
+        ComposersList();
+        InGreen(58, 17, " A ");
+        InGreen(38, 45, " Antonio Luci Vivaldi ");
+        VoteWindow();
+        Composer composer = new ComposerInMemory("Antonio", "Luci", "Vivaldi");
+        composer.NewVoteAdded += NewVoteVoid;
+        TryCatchVote(composer);
+        FinaleVoteInMemory();
+    }
+
+    static void VoteInMemoryB()
+    {
+        ComposersList();
+        InGreen(94, 17, " B ");
+        InGreen(101, 39, " Johan Sebastian Bach ");
+        VoteWindow();
+        var composer = new ComposerInMemory("Johan", "Sebastian", "Bach");
+        composer.NewVoteAdded += NewVoteVoid;
+        TryCatchVote(composer);
+        FinaleVoteInMemory();
+    }
+
+    static void FinaleVoteInMemory()
+    {
+        Attention(53, 30, "     Remember, this vote will not be saved !     ");
+        InfoBlue(38, 34, "                                                                                         ");
+        InfoBlue(38, 35, "   If You want to save vote's results, please enter the composer from the list bellowe   ");
+        InfoBlue(38, 36, "                                                                                         ");
+        Clear();
     }
 
     static void Attention(int left, int top, string text)
@@ -233,28 +223,6 @@ public partial class Program
         Console.WriteLine(text);
     }
 
-    public static void Largo(string text, char search, ConsoleColor color)
-    {
-        Console.CursorVisible = false;
-        Console.BackgroundColor = ConsoleColor.Cyan;
-        foreach (var letter in text)
-        {
-            if (letter == search)
-            {
-                Console.ForegroundColor = color;
-                Console.BackgroundColor = ConsoleColor.Cyan;
-            }
-            else if (letter != search)
-            {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Cyan;
-            }
-            Console.Write(letter);
-            Thread.Sleep(70);
-        }
-        Console.WriteLine();
-    }
-
     static void ChooseComposer()
     {
         InfoGray(53, 25, "░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░");
@@ -282,20 +250,18 @@ public partial class Program
     static void Information()
     {
         Console.SetCursorPosition(0, 41);
-        Menu.Largo(ConsoleColor.Cyan, "                               . . .  invite you to a special survey on the comparator - DUEL of Champions - enter S  . . .");
-        //Console.SetCursorPosition(95, 49);
-        //Menu.Largo(ConsoleColor.Cyan,"    press Esc to skip this intro  ");
+        Menu.WriteSlowly(ConsoleColor.Cyan, "                               . . .  invite you to a special survey on the comparator - DUEL of Champions - enter S  . . .");
+        Console.SetCursorPosition(103, 25);
+        Menu.WriteSlowly(ConsoleColor.Cyan, ". . . find your favorite,  ");
+        Console.SetCursorPosition(104, 27);
+        Menu.WriteSlowly(ConsoleColor.Cyan, "        vote for him   ");
+        Console.SetCursorPosition(105, 29);
+        Menu.WriteSlowly(ConsoleColor.Cyan, "     and check the results ");
         Console.SetCursorPosition(0, 14);
         Console.Write("           Try the demo version without saving, use quick access to the most popular ones");
         Console.SetCursorPosition(89, 14);
-        Menu.Largo(ConsoleColor.Cyan, "  -  press  A  or  B  . . . .  more info  -  press  I            ");
+        Menu.WriteSlowly(ConsoleColor.Cyan, "  -  press  A  or  B  . . . .  more info  -  press  I            ");
         AntonioBachLabel();
-        Console.SetCursorPosition(103, 25);
-        Menu.Largo(ConsoleColor.Cyan, ". . . find your favorite,  ");
-        Console.SetCursorPosition(104, 27);
-        Menu.Largo(ConsoleColor.Cyan, "        vote for him   ");
-        Console.SetCursorPosition(105, 29);
-        Menu.Largo(ConsoleColor.Cyan, "     and check the results ");
     }
 
     static void ComposersList()
@@ -381,22 +347,6 @@ public partial class Program
         "\n                                                                                                                                                           " +
         "\n                                                                                                                                                           " +
         "\n                                                                                                                                                           ");
-
-        //InfoBlue(0, 40,
-        //  "   ░░░░░░░░░░░░░░░░░                                                                                                                  ░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░                                                                                                                  ░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░                             Compare music and vote for your favourite classical pices.                           ░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░                                                                                                                  ░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░                        Take part in researching the work of the most outstanding composers.                      ░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░                                                                                                                  ░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░                                                                                                                  ░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░                                                                                                                  ░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░                                                ________<\">________                                               ░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░                                                                                                                  ░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░                                                                                            ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░((((((((                                            ))))))))░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░\n" +
-        //  "   ░░░░░░░░░░░░░░░░░░░░░░░░                                                                                                    ░░░░░░░░░░░░░░░░░░░░░░░░░░░\n");
 
         ChooseComposer();
         Console.SetCursorPosition(76, 12);
