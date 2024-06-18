@@ -3,21 +3,6 @@
     internal class ComposerTests
     {
         [Test]
-        public void WhenComposerCollectFiveGrades_ShouldReturnCorrectSum()
-        {
-            var composer = new ComposerInMemory("Tomaso", "Albinoni");
-            composer.AddGrade(100);
-            composer.AddGrade(7);
-            composer.AddGrade(1);
-            composer.AddGrade(2);
-            composer.AddGrade(2);
-
-            var result = composer.Result;
-
-            Assert.That(result, Is.EqualTo(112));
-        }
-
-        [Test]
         public void WhenComposerCollectFourGrades_ShouldReturnCorrectAverage()
         {
             var composer = new ComposerInMemory("Tomaso", "Albinoni");

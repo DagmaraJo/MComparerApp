@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-
-
-namespace MComparerApp
+﻿namespace MComparerApp
 {
     public class Statistics
     {
@@ -13,8 +9,6 @@ namespace MComparerApp
         public float Count { get; private set; }
 
         public float Sum { get; private set; }
-
-        public float MaxCount { get; private set; }
 
         public float Average
         {

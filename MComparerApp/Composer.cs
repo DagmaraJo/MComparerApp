@@ -31,7 +31,6 @@
 
         public string? Name { get; private set; }
         
-
         public string? Secondname { get; private set; }
         
         public string? Surname { get; private set; }
@@ -47,8 +46,6 @@
         public string? FullName2 => $"{Name} {Surname}";
 
         public abstract void AddGrade(float grade);
-
-        public abstract void AddGrade(string grade);
 
         public void AddGrade(char grade)
         {
@@ -83,6 +80,22 @@
             }
         }
 
+        public void AddGrade(string grade)
+        {
+            if (float.TryParse(grade, out float result))
+            {
+                this.AddGrade(result);
+            }
+            else if (char.TryParse(grade, out char chResult))
+            {
+                this.AddGrade(chResult);
+            }
+            else
+            {
+                throw new Exception("      String is not float !   ▀▀▀▀▀");
+            }
+        }
+
         public void AddGrade(int grade)
         {
             float gradeAsInt = grade;
@@ -103,24 +116,16 @@
         {
             Console.BackgroundColor = ConsoleColor.DarkYellow;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\n\n\n     *    R E S U L T S    *    ");
-            Console.BackgroundColor = ConsoleColor.Yellow;
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
-            Console.WriteLine("                                ");
-            Console.WriteLine($"    {this.FullName.ToUpper()}  * *   ");
-            Console.WriteLine("                                ");
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("\n\n\n     *    R E S U L T S    *    ");
+            Console.ResetColor();
+            Console.WriteLine($"\n    {this.FullName.ToUpper()}  \n");
             Console.WriteLine(" ****************************** ");
-            Console.WriteLine($"    Total votes :  {GetStatistics().Count}           ");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine($"    Total marks :  {GetStatistics().Sum:N0}        ");
-            Console.BackgroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"    Total votes :  {GetStatistics().Count} ");
+            Console.WriteLine($"    Total marks :  {GetStatistics().Sum:N0} ");
             Console.WriteLine($"        Average :  {GetStatistics().Average:N0}          ");
             Console.WriteLine($"            Max :  {GetStatistics().Max:N0}         ");
             Console.WriteLine($"            Min :  {GetStatistics().Min:N0}           ");
             Console.WriteLine(" ------------------------------");
-            Console.Write("XXXShowResults();/from baseXXXX");
         }
     }
 }

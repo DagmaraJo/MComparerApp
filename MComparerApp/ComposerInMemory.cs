@@ -20,7 +20,7 @@
 
         public override void AddGrade(float grade)
         {
-            if (grade >=0.002 && grade <= 100.009)
+            if (grade >=1 && grade <= 100)
             {
                 this.grades.Add(grade);
                 NewVoteAdded?.Invoke(this, new EventArgs());
@@ -28,30 +28,6 @@
             else
             {
                 throw new Exception("      Invalid grade value !   ▀▀▀▀▀");
-            }
-        }
-
-        public override void AddGrade(string grade)
-        {
-            if (float.TryParse(grade, out float result))
-            {
-                this.AddGrade(result);
-            }
-            else if (char.TryParse(grade, out char chResult))
-            {
-                this.AddGrade(chResult);
-            }
-            else
-            {
-                throw new Exception("      String is not float !   ▀▀▀▀▀");
-            }
-        }
-
-        public float Result
-        {
-            get
-            {
-                return this.grades.Sum();
             }
         }
 
