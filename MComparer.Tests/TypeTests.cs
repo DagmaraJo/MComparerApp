@@ -52,8 +52,4 @@
             return new ComposerInMemory(name, surname);
         }
     }
-
-
-
-    
 }
